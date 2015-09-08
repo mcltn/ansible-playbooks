@@ -1,0 +1,7 @@
+rs.initiate()
+sleep(3000)
+{% for host in groups['private_aa-mcltn-slave'] %}
+rs.add("{{ host }}:{{ mongod_port }}")
+sleep(3000)
+{% endfor %}
+rs.status()

@@ -1,0 +1,10 @@
+---
+- hosts: private_aa-mcltn
+  remote_user: root
+  roles:
+  - role: common
+  - role: replica_set
+- hosts: private_aa-mcltn-master
+  remote_user: root
+  tasks:
+    - include: roles/replica_set/tasks/replset_init.yaml
