@@ -1,0 +1,25 @@
+---
+- name: Install Tomcat8
+  hosts: tomcat-test-mcltn
+  remote_user: root
+  gather_facts: True
+  tasks:
+
+  - name: Ensure python-apt is installed
+    command: apt-get install python-apt -y -q creates=/usr/share/doc/python-apt
+    sudo: yes
+
+  - name: update apt cache
+    apt: update_cache=yes
+
+  - name: Install Java 1.7
+    apt: pkg=openjdk-7-jdk state=present
+    environment:
+      PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/lib/jvm/java-7-oracle/bin:/usr/lib/jvm/java-7-oracle/db/bin:/usr/lib/jvm/java-7-oracle/jre/bin
+
+  - name: Install Tomcat 7
+    apt: pkg=tomcat7 state=present
+    environment:
+      PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/lib/jvm/java-7-oracle/bin:/usr/lib/jvm/java-7-oracle/db/bin:/usr/lib/jvm/java-7-oracle/jre/bin
+
+  - service: name=tomcat7 state=restarted
