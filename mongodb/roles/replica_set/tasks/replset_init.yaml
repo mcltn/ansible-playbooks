@@ -3,4 +3,4 @@
   template: src=roles/replica_set/templates/replset_init.j2 dest=/tmp/replset_init.js
 
 - name: Initialize replica set
-  command: mongo --port {{ mongod_port }} /tmp/replset_init.js
+  command: mongo --host {{ ansible_eth1.ipv4.address }} --port {{ mongod_port }} /tmp/replset_init.js

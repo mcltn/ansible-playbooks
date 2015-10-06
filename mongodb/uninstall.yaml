@@ -1,7 +1,7 @@
 ---
 # This Playbook uninstall MongoDB and remove all related files (include data!)
 
-- hosts: private_aa-mcltn
+- hosts: mongo-test-mcltn
   tasks:
     - name: Stopping MongoDB service
       sudo: yes

@@ -10,7 +10,7 @@ mongos_port: 27017
 config_server_port: 27019
 
 # Directory prefix where database files are kept
-mongodb_datadir_prefix: /data/
+mongodb_datadir_prefix: /mongodb/data/
 
 # Directory prefix where log files are kept
 mongodb_logdir_prefix: /var/log/

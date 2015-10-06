@@ -6,11 +6,12 @@ systemLog:
 processManagement:
   fork: true
 net:
+  bindIp: {{ ansible_eth1.ipv4.address }}
   port: {{ mongod_port }}
 operationProfiling:
   mode: slowOp
 storage:
-  dbPath: {{ mongodb_datadir_prefix }}mongodb
+  dbPath: {{ mongodb_datadir_prefix }}
   smallFiles: {{ smallfiles_option }}
 replication:
   replSetName: "{{ replset_name }}0"

@@ -1,0 +1,58 @@
+---
+- name: Build Mongo Servers
+  hosts: localhost
+  gather_facts: False
+  tasks:
+  - name: Build Master
+    local_action:
+      module: softlayer
+      hostname: zz-mcltn-1
+      domain: colton.cc
+      datacenter: mex01
+      tag: 'mongo-test-mcltn, mongo-test-mcltn-master'
+      hourly: True
+      private: False
+      dedicated: False
+      local_disk: True
+      cpus: 1
+      memory: 1024
+      disks: [25,100]
+      os_code: UBUNTU_LATEST
+      image_id:
+      private_vlan:
+      ssh_keys: [175267]
+      post_uri:
+
+  - name: Build Slaves
+    local_action:
+      module: softlayer
+      quantity: 2
+      increment: True
+      increment_start: 2
+      hostname: zz-mcltn
+      domain: colton.cc
+      datacenter: mex01
+      tag: 'mongo-test-mcltn, mongo-test-mcltn-slave'
+      hourly: True
+      private: False
+      dedicated: False
+      local_disk: True
+      cpus: 1
+      memory: 1024
+      disks: [25,100]
+      os_code: UBUNTU_LATEST
+      image_id:
+      private_vlan:
+      ssh_keys: [175267]
+      post_uri:
+
+
+- name: Wait for instances
+  hosts: localhost
+  gather_facts: False
+  tasks:
+  - name: Wait by tag
+    local_action:
+      module: softlayer
+      state: wait
+      tag: mongo-test-mcltn

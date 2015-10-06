@@ -1,6 +1,6 @@
 rs.initiate()
 sleep(3000)
-{% for host in groups['private_aa-mcltn-slave'] %}
+{% for host in groups['mongo-test-mcltn-slave'] %}
 rs.add("{{ host }}:{{ mongod_port }}")
 sleep(3000)
 {% endfor %}
