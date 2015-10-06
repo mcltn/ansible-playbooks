@@ -17,3 +17,22 @@ Deploys a MongoDB cluster using the latest Enterprise version.
 ```
  ansible-playbook cancel_servers.yaml
 ```
+
+
+## tomcat
+Deploys Tomcat servers.
+
+> Build servers
+```
+ ansible-playbook build_servers.yaml
+```
+
+> Install Tomcat
+```
+ ansible-playbook -i .../contrib/inventory/softlayer.py install_tomcat.yaml
+```
+
+> Cancel Servers
+```
+ ansible-playbook cancel_servers.yaml
+```
