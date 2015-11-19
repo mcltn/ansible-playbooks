@@ -5,7 +5,7 @@
   tasks:
   - name: Build Servers
     local_action:
-      module: softlayer
+      module: sl
       quantity: 2
       increment: True
       hostname: zzw-mcltn
@@ -28,6 +28,6 @@
   tasks:
   - name: Wait by tag
     local_action:
-      module: softlayer
+      module: sl
       state: wait
       tag: tomcat-test-mcltn

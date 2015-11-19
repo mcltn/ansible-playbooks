@@ -5,7 +5,7 @@
   tasks:
   - name: Build Master
     local_action:
-      module: softlayer
+      module: sl
       hostname: zz-mcltn-1
       domain: colton.cc
       datacenter: mex01
@@ -25,7 +25,7 @@
 
   - name: Build Slaves
     local_action:
-      module: softlayer
+      module: sl
       quantity: 2
       increment: True
       increment_start: 2
@@ -53,6 +53,6 @@
   tasks:
   - name: Wait by tag
     local_action:
-      module: softlayer
+      module: sl
       state: wait
       tag: mongo-test-mcltn

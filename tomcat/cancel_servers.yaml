@@ -4,6 +4,6 @@
   tasks:
   - name: Cancel by tag
     local_action:
-      module: softlayer
+      module: sl
       state: absent
       tag: tomcat-test-mcltn
