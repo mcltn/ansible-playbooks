@@ -6,4 +6,4 @@
     local_action:
       module: sl
       state: absent
-      tag: mongo-test-mcltn
+      tags: ['mongo-test-mcltn', 'mongo-test-mcltn-master']

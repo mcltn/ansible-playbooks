@@ -11,23 +11,14 @@
       hostname: zzw-mcltn
       domain: colton.cc
       datacenter: mex01
-      tag: 'tomcat-test-mcltn'
+      tags: 'tomcat-test-mcltn'
       hourly: True
       private: False
       dedicated: False
       local_disk: True
       cpus: 1
-      memory: 1024
+      memory: '1024'
       disks: [25]
       os_code: UBUNTU_LATEST
       ssh_keys: [175267]
-
-- name: Wait for instances
-  hosts: localhost
-  gather_facts: False
-  tasks:
-  - name: Wait by tag
-    local_action:
-      module: sl
-      state: wait
-      tag: tomcat-test-mcltn
+      wait: True

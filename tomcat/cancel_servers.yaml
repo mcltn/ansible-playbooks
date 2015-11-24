@@ -6,4 +6,4 @@
     local_action:
       module: sl
       state: absent
-      tag: tomcat-test-mcltn
+      tags: ['tomcat-test-mcltn','tomcat-test-mcltn-test']

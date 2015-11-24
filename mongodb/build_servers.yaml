@@ -9,7 +9,7 @@
       hostname: zz-mcltn-1
       domain: colton.cc
       datacenter: mex01
-      tag: 'mongo-test-mcltn, mongo-test-mcltn-master'
+      tags: ['mongo-test-mcltn', 'mongo-test-mcltn-master']
       hourly: True
       private: False
       dedicated: False
@@ -22,6 +22,7 @@
       private_vlan:
       ssh_keys: [175267]
       post_uri:
+      wait: False
 
   - name: Build Slaves
     local_action:
@@ -32,7 +33,7 @@
       hostname: zz-mcltn
       domain: colton.cc
       datacenter: mex01
-      tag: 'mongo-test-mcltn, mongo-test-mcltn-slave'
+      tags: ['mongo-test-mcltn', 'mongo-test-mcltn-slave']
       hourly: True
       private: False
       dedicated: False
@@ -45,14 +46,4 @@
       private_vlan:
       ssh_keys: [175267]
       post_uri:
-
-
-- name: Wait for instances
-  hosts: localhost
-  gather_facts: False
-  tasks:
-  - name: Wait by tag
-    local_action:
-      module: sl
-      state: wait
-      tag: mongo-test-mcltn
+      wait: True
