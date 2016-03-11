@@ -1,0 +1,68 @@
+---
+- name: Build Tomcat Servers
+  hosts: localhost
+  gather_facts: False
+  tasks:
+  - name: Build Servers
+    local_action:
+      module: sl
+      hostname: "{{ item.hostname }}"
+      domain: "{{ item.domain }}"
+      datacenter: "{{ item.datacenter }}"
+      tags: "{{ item.tags }}"
+      hourly: "{{ item.hourly }}"
+      private: "{{ item.private }}"
+      dedicated: "{{ item.dedicated | bool }}"
+      local_disk: "{{ item.local_disk }}"
+      cpus: "{{ item.cpus }}"
+      memory: "{{ item.memory }}"
+      disks: "{{ item.disks }}"
+      os_code: "{{ item.os_code }}"
+      ssh_keys: "{{ item.ssh_keys }}"
+      wait: "{{ item.wait }}"
+    with_items:
+      - { hostname: 'zz-1', domain: 'colton.cc', datacenter: 'sjc03', tags: 'tomcat-test-mcltn', hourly: True, private: False, dedicated: False, local_disk: True, cpus: 1, memory: 1024, disks: [25], os_code: 'UBUNTU_LATEST', ssh_keys: [175267], wait: True }
+      - { hostname: 'zz-2', domain: 'colton.cc', datacenter: 'sjc03', tags: 'tomcat-test-mcltn', hourly: True, private: False, dedicated: False, local_disk: True, cpus: 1, memory: 1024, disks: [25], os_code: 'UBUNTU_LATEST', ssh_keys: [175267], wait: True }
+    register: sl_result
+
+  - name: Debug
+    debug: msg="{{ item.instance }}"
+    with_items: "{{ sl_result.results }}"
+
+- name: Add instances to group 'slhosts'
+  hosts: localhost
+  gather_facts: False
+  tasks:
+  - name: Add Hosts
+    local_action:
+      module: add_host
+      name: "{{item.instance.primaryIpAddress}}"
+      groups: slhosts
+    with_items: "{{ sl_result.results }}"
+    when: sl_result.changed == True
+
+
+- name: Install Tomcat8
+  hosts: slhosts
+  remote_user: root
+  gather_facts: True
+  tasks:
+
+  - name: Ensure python-apt is installed
+    command: apt-get install python-apt -y -q creates=/usr/share/doc/python-apt
+    sudo: yes
+
+  - name: update apt cache
+    apt: update_cache=yes
+
+  - name: Install Java 1.7
+    apt: pkg=openjdk-7-jdk state=present
+    environment:
+      PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/lib/jvm/java-7-oracle/bin:/usr/lib/jvm/java-7-oracle/db/bin:/usr/lib/jvm/java-7-oracle/jre/bin
+
+  - name: Install Tomcat 7
+    apt: pkg=tomcat7 state=present
+    environment:
+      PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/lib/jvm/java-7-oracle/bin:/usr/lib/jvm/java-7-oracle/db/bin:/usr/lib/jvm/java-7-oracle/jre/bin
+
+  - service: name=tomcat7 state=restarted
