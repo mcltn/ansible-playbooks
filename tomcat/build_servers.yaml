@@ -8,9 +8,9 @@
       module: sl
       quantity: 2
       increment: True
-      hostname: zzw-mcltn
+      hostname: zzb-mcltn
       domain: colton.cc
-      datacenter: mex01
+      datacenter: sjc03
       tags: 'tomcat-test-mcltn'
       hourly: True
       private: False
