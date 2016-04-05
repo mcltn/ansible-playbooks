@@ -5,7 +5,7 @@
   tasks:
   - name: Build Servers
     local_action:
-      module: sl
+      module: sl_vm
       hostname: "{{ item.hostname }}"
       domain: "{{ item.domain }}"
       datacenter: "{{ item.datacenter }}"
@@ -26,7 +26,7 @@
     register: sl_result
 
   - name: Debug
-    debug: msg="{{ item.instance }}"
+    debug: msg={{ item.instance }}
     with_items: "{{ sl_result.results }}"
 
 - name: Add instances to group 'slhosts'
@@ -46,14 +46,13 @@
   hosts: slhosts
   remote_user: root
   gather_facts: True
+  sudo: yes
   tasks:
-
   - name: Ensure python-apt is installed
     command: apt-get install python-apt -y -q creates=/usr/share/doc/python-apt
-    sudo: yes
 
   - name: update apt cache
-    apt: update_cache=yes
+    command: apt-get update
 
   - name: Install Java 1.7
     apt: pkg=openjdk-7-jdk state=present

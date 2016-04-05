@@ -4,6 +4,6 @@
   tasks:
   - name: Cancel by tag
     local_action:
-      module: sl
+      module: sl_vm
       state: absent
-      tags: ['tomcat-test-mcltn','tomcat-test-mcltn-test']
+      tags: ['tomcat-test-mcltn','tomcat-test-mcltn-sjc']
