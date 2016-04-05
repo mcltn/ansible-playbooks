@@ -5,20 +5,22 @@
   tasks:
   - name: Build Servers
     local_action:
-      module: sl
-      quantity: 2
-      increment: True
-      hostname: zzb-mcltn
-      domain: colton.cc
-      datacenter: sjc03
-      tags: 'tomcat-test-mcltn'
-      hourly: True
-      private: False
-      dedicated: False
-      local_disk: True
-      cpus: 1
-      memory: '1024'
-      disks: [25]
-      os_code: UBUNTU_LATEST
-      ssh_keys: [175267]
-      wait: True
+      module: sl_vm
+      hostname: "{{ item.hostname }}"
+      domain: "{{ item.domain }}"
+      datacenter: "{{ item.datacenter }}"
+      tags: "{{ item.tags }}"
+      hourly: "{{ item.hourly }}"
+      private: "{{ item.private }}"
+      dedicated: "{{ item.dedicated | bool }}"
+      local_disk: "{{ item.local_disk }}"
+      cpus: "{{ item.cpus }}"
+      memory: "{{ item.memory }}"
+      disks: "{{ item.disks }}"
+      os_code: "{{ item.os_code }}"
+      ssh_keys: "{{ item.ssh_keys }}"
+      wait: "{{ item.wait }}"
+    with_items:
+      - { hostname: 'zz-1', domain: 'colton.cc', datacenter: 'sjc03', tags: 'tomcat-test-mcltn', hourly: True, private: False, dedicated: False, local_disk: True, cpus: 1, memory: 1024, disks: [25], os_code: 'UBUNTU_LATEST', ssh_keys: [175267], wait: True }
+      - { hostname: 'zz-2', domain: 'colton.cc', datacenter: 'sjc03', tags: 'tomcat-test-mcltn', hourly: True, private: False, dedicated: False, local_disk: True, cpus: 1, memory: 1024, disks: [25], os_code: 'UBUNTU_LATEST', ssh_keys: [175267], wait: True }
+    register: sl_result

@@ -6,4 +6,4 @@
     local_action:
       module: sl_vm
       state: absent
-      tags: ['tomcat-test-mcltn','tomcat-test-mcltn-sjc']
+      tags: ['tomcat-test-mcltn']
