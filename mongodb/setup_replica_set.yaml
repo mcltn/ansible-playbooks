@@ -1,11 +1,10 @@
 ---
-- name: Mount drive
-  hosts: mongo-test-mcltn
-  remote_user: root
-  gather_facts: False
-  tasks:
-  - script: mount_disk.sh
-
+#- name: Mount drive
+#  hosts: mongo-test-mcltn
+#  remote_user: root
+#  gather_facts: False
+#  tasks:
+#  - script: mount_disk.sh
 
 - name: Install Mongo
   hosts: mongo-test-mcltn
@@ -14,6 +13,7 @@
   roles:
   - role: common
   - role: replica_set
+
 - hosts: mongo-test-mcltn-master
   remote_user: root
   tasks:

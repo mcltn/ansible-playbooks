@@ -4,6 +4,6 @@
   tasks:
   - name: Cancel by tag
     local_action:
-      module: sl
+      module: sl_vm
       state: absent
-      tags: ['mongo-test-mcltn', 'mongo-test-mcltn-master']
+      tags: ['mongo-test-mcltn']

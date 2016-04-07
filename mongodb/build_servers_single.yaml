@@ -3,7 +3,7 @@
   hosts: localhost
   gather_facts: False
   tasks:
-  - name: Build Master and Slaves
+  - name: Build Master
     local_action:
       module: sl_vm
       hostname: "{{ item.hostname }}"
@@ -23,5 +23,39 @@
     with_items:
       - { hostname: 'zz-1', domain: 'colton.cc', datacenter: 'sjc03', tags: ['mongo-test-mcltn', 'mongo-test-mcltn-master'], hourly: True, private: False, dedicated: False, local_disk: True, cpus: 1, memory: 1024, disks: [25,100], os_code: 'UBUNTU_LATEST', ssh_keys: [175267], wait: True }
       - { hostname: 'zz-2', domain: 'colton.cc', datacenter: 'sjc03', tags: ['mongo-test-mcltn', 'mongo-test-mcltn-slave'], hourly: True, private: False, dedicated: False, local_disk: True, cpus: 1, memory: 1024, disks: [25,100], os_code: 'UBUNTU_LATEST', ssh_keys: [175267], wait: True }
-      - { hostname: 'zz-3', domain: 'colton.cc', datacenter: 'sjc03', tags: ['mongo-test-mcltn', 'mongo-test-mcltn-slave'], hourly: True, private: False, dedicated: False, local_disk: True, cpus: 1, memory: 1024, disks: [25,100], os_code: 'UBUNTU_LATEST', ssh_keys: [175267], wait: True }
+      - { hostname: 'zz-2', domain: 'colton.cc', datacenter: 'sjc03', tags: ['mongo-test-mcltn', 'mongo-test-mcltn-slave'], hourly: True, private: False, dedicated: False, local_disk: True, cpus: 1, memory: 1024, disks: [25,100], os_code: 'UBUNTU_LATEST', ssh_keys: [175267], wait: True }
     register: vm_results
+
+
+- name: Add instances to group 'slhosts'
+  hosts: localhost
+  gather_facts: False
+  tasks:
+  - name: Add Hosts
+    local_action:
+      module: add_host
+      name: "{{item.instance.primaryIpAddress}}"
+      groups: slhosts
+    with_items: "{{ vm_results.results }}"
+    when: vm_results.changed == True
+
+
+- name: Mount drive
+  hosts: mongo-test-mcltn
+  remote_user: root
+  gather_facts: False
+  tasks:
+  - script: mount_disk.sh
+
+
+- name: Install Mongo
+  hosts: mongo-test-mcltn
+  remote_user: root
+  gather_facts: True
+  roles:
+  - role: common
+  - role: replica_set
+- hosts: mongo-test-mcltn-master
+  remote_user: root
+  tasks:
+    - include: roles/replica_set/tasks/replset_init.yaml
